@@ -40,32 +40,15 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  // TEMP sensor
-
-  // tempVal = analogRead(TEMP_SENSOR_PIN);  
-  // float mv = (tempVal * 5.0 / 1023.0) * 100;
-  // float cel = mv/10;
-  // Serial.print("TEMPRATURE = ");
-  // Serial.print(cel);
-  // Serial.print("*C");
-  // Serial.println();
-
   //temp and humidity
   int chk = DHT.read11(DHT11_PIN);
   Serial.print("Temperature = ");
   Serial.println(DHT.temperature);
   Serial.print("Humidity = ");
   Serial.println(DHT.humidity);
-  // delay(1000);
   
-  //buzz if the remperature is over 25
-  // if(cel > 25){
-  //   Serial.println("OVER");
-  //   tone(BUZZ, 1000); // Send 1KHz sound signal...
-  //   delay(1000);        // ...for 1 sec
-  //   noTone(BUZZ);     // Stop sound...
-  //   delay(1000);        // ...for 1sec
-  // }
+  // buzz if the temperature is over 30
+  // when hum and temp are too high buzz as well but make the functionality
    if(DHT.temperature > 30){
     Serial.println("OVER");
     tone(BUZZ, 1000); // Send 1KHz sound signal...
