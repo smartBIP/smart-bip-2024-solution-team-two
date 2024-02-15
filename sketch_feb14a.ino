@@ -18,15 +18,18 @@ dht DHT;
 
 // sabotage sensor
 #define SAB_SENSOR 8
+int digital;
 
 // ir count sensor for entrance sensor
 #define ENTRANCE_COUNT 2
+int amount_of_people = 0;
 
 // sound 7
 #define BUZZ 7
 
 void setup() {
   // put your setup code here, to run once:
+  pinMode(SAB_SENSOR, INPUT);
   Serial.begin(9600);
 
   //display
@@ -37,8 +40,15 @@ void setup() {
   pinMode(BUZZ, OUTPUT); // Set buzzer - pin 9 as an output
 }
 
+void enter_counter(){
+amount_of_people +=  digitalRead(ENTRANCE_COUNT);
+ display.showNumberDec(amount_of_people);
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
+
+enter_counter();
 
   //temp and humidity
   int chk = DHT.read11(DHT11_PIN);
@@ -46,7 +56,7 @@ void loop() {
   Serial.println(DHT.temperature);
   Serial.print("Humidity = ");
   Serial.println(DHT.humidity);
-  
+
   // buzz if the temperature is over 30
   // when hum and temp are too high buzz as well but make the functionality
    if(DHT.temperature > 30){
@@ -56,13 +66,28 @@ void loop() {
     noTone(BUZZ);     // Stop sound...
     delay(1000);        // ...for 1sec
   }
-  delay(1000);
+
+
+//sabotage
+digital = digitalRead(SAB_SENSOR);
+Serial.println(digital); 
+if(digital == HIGH) {
+    tone(BUZZ, 1000); // Send 1KHz sound signal...
+
+ delay(1000);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(1000); 
+
+};
+
+
 
   // Count sensor for entering
 
   // DISPLAY sensor
-  display.showNumberDec(DHT.temperature);
+ // display.showNumberDec(DHT.temperature);
 
 
 
+  delay(1000);
 }
