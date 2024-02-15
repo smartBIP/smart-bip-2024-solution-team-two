@@ -19,15 +19,25 @@ dht DHT;
 // sabotage sensor
 #define SAB_SENSOR 8
 int digital;
+
 // exit counter
 #define EXIT_SENSOR 9
 
-// ir count sensor for entrance sensor
+// enter counter 
 #define ENTRANCE_COUNT 2
 int amount_of_people = 0;
 
 // sound 7
 #define BUZZ 7
+
+//button
+#define BUTTON 10
+int buttonState = 0;
+int pressCount = 0;
+
+// LED
+#define LED 6
+int ledState = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -40,20 +50,22 @@ void setup() {
 
   // buzzer
   pinMode(BUZZ, OUTPUT); // Set buzzer - pin 9 as an output
+  pinMode(BUTTON, INPUT); // Set button as an input
+  pinMode(LED, OUTPUT);  // initialize the LED pin as an output:
 }
 
 void showTempHum(){
 //temp and humidity
   int chk = DHT.read11(DHT11_PIN);
-  Serial.print("Temperature = ");
-  Serial.println(DHT.temperature);
-  Serial.print("Humidity = ");
-  Serial.println(DHT.humidity);
+  // Serial.print("Temperature = ");
+  // Serial.println(DHT.temperature);
+  // Serial.print("Humidity = ");
+  // Serial.println(DHT.humidity);
 }
 
 void enterCounter(){
-amount_of_people += digitalRead(ENTRANCE_COUNT);
- display.showNumberDec(amount_of_people);
+  amount_of_people += digitalRead(ENTRANCE_COUNT);
+  display.showNumberDec(amount_of_people);
 }
 
 void exitCounter(){
@@ -78,8 +90,8 @@ void buzzIfTempHum(){
 void sabotage(){
   //sabotage
   digital = digitalRead(SAB_SENSOR);
-  Serial.print("digital=");
-  Serial.print(digital); 
+  // Serial.print("digital=");
+  // Serial.print(digital); 
   if(digital == HIGH) {
     //comment the lines below if you don t want it to buzz
     // tone(BUZZ, 1000); // Send 1KHz sound signal...
@@ -87,6 +99,34 @@ void sabotage(){
     // noTone(BUZZ);     // Stop sound...
     // delay(1000); 
   };
+}
+
+void buttonFunct(){
+  // read the state of the pushbutton value:
+  buttonState = digitalRead(BUTTON);
+  Serial.println(buttonState);
+  // check if the pushbutton is pressed. If it is, the buttonState is LOW:
+  // if (buttonState == LOW) {
+  //   Serial.println("button pressed");
+  //   // turn LED on:
+  //   if(ledState = 0){
+  //     Serial.println("ledState is 0");
+  //     // ledState = 1;
+  //     digitalWrite(LED, HIGH);
+  //   }else{
+  //     Serial.println("ledstate is 1");
+  //     // ledState = 0;
+  //     digitalWrite(LED, LOW);
+  //   }
+  // } 
+  if(buttonState == LOW){
+    if(pressCount % 2 == 1){
+      digitalWrite(LED, HIGH);
+    }else{
+      digitalWrite(LED, LOW);
+    }
+    pressCount += 1;
+  }
 }
 void loop() {
   // put your main code here, to run repeatedly:
@@ -96,6 +136,7 @@ void loop() {
   showTempHum();
   buzzIfTempHum();
   sabotage();
+  buttonFunct();
   // Count sensor for entering
   // DISPLAY sensor
  // display.showNumberDec(DHT.temperature);
