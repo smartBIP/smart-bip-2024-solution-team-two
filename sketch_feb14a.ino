@@ -19,6 +19,8 @@ dht DHT;
 // sabotage sensor
 #define SAB_SENSOR 8
 int digital;
+// exit counter
+#define EXIT_SENSOR 9
 
 // ir count sensor for entrance sensor
 #define ENTRANCE_COUNT 2
