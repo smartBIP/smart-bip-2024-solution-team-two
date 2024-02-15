@@ -81,10 +81,8 @@ void buzzIfTempHum(){
 }
 
 void sabotage(){
-  //sabotage
+  //sabotage motion sensor
   digital = digitalRead(SAB_SENSOR);
-  // Serial.print("digital=");
-  // Serial.print(digital); 
   if(digital == HIGH) {
     //comment the lines below if you don t want it to buzz
     // tone(BUZZ, 1000); // Send 1KHz sound signal...
@@ -107,15 +105,11 @@ void buttonFunct(){
   }
 }
 void loop() {
-  // put your main code here, to run repeatedly:
-
   enterCounter();
   exitCounter();
   showTempHum();
   buzzIfTempHum();
   sabotage();
   buttonFunct();
-  // DISPLAY sensor
- // display.showNumberDec(DHT.temperature);
   delay(300);
 }
