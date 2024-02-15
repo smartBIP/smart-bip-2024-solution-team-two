@@ -58,6 +58,9 @@ amount_of_people += digitalRead(ENTRANCE_COUNT);
 
 void exitCounter(){
   amount_of_people -= digitalRead(EXIT_SENSOR);
+  if(amount_of_people < 0){
+    amount_of_people = 0;
+  }
   display.showNumberDec(amount_of_people);
 }
 void buzzIfTempHum(){
