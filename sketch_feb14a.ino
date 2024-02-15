@@ -4,17 +4,10 @@
 #define DIO 4
 TM1637Display display = TM1637Display(CLK, DIO);
 
-//temp
-#define TEMP_SENSOR_PIN 5
-int tempVal;
-
 // temp + humidity
 #define DHT11_PIN 5
 #include <dht.h>
 dht DHT;
-
-// led lamp
-#define LED_LAMP 6
 
 // sabotage sensor
 #define SAB_SENSOR 8
@@ -57,10 +50,10 @@ void setup() {
 void showTempHum(){
 //temp and humidity
   int chk = DHT.read11(DHT11_PIN);
-  // Serial.print("Temperature = ");
-  // Serial.println(DHT.temperature);
-  // Serial.print("Humidity = ");
-  // Serial.println(DHT.humidity);
+  Serial.print("Temperature = ");
+  Serial.println(DHT.temperature);
+  Serial.print("Humidity = ");
+  Serial.println(DHT.humidity);
 }
 
 void enterCounter(){
@@ -104,21 +97,6 @@ void sabotage(){
 void buttonFunct(){
   // read the state of the pushbutton value:
   buttonState = digitalRead(BUTTON);
-  Serial.println(buttonState);
-  // check if the pushbutton is pressed. If it is, the buttonState is LOW:
-  // if (buttonState == LOW) {
-  //   Serial.println("button pressed");
-  //   // turn LED on:
-  //   if(ledState = 0){
-  //     Serial.println("ledState is 0");
-  //     // ledState = 1;
-  //     digitalWrite(LED, HIGH);
-  //   }else{
-  //     Serial.println("ledstate is 1");
-  //     // ledState = 0;
-  //     digitalWrite(LED, LOW);
-  //   }
-  // } 
   if(buttonState == LOW){
     if(pressCount % 2 == 1){
       digitalWrite(LED, HIGH);
@@ -137,7 +115,6 @@ void loop() {
   buzzIfTempHum();
   sabotage();
   buttonFunct();
-  // Count sensor for entering
   // DISPLAY sensor
  // display.showNumberDec(DHT.temperature);
   delay(300);
