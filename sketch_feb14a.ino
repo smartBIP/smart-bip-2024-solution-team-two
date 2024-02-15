@@ -40,23 +40,21 @@ void setup() {
   pinMode(BUZZ, OUTPUT); // Set buzzer - pin 9 as an output
 }
 
-void enter_counter(){
-amount_of_people +=  digitalRead(ENTRANCE_COUNT);
- display.showNumberDec(amount_of_people);
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-
-enter_counter();
-
-  //temp and humidity
+void showTempHum(){
+//temp and humidity
   int chk = DHT.read11(DHT11_PIN);
   Serial.print("Temperature = ");
   Serial.println(DHT.temperature);
   Serial.print("Humidity = ");
   Serial.println(DHT.humidity);
+}
 
+void enter_counter(){
+amount_of_people +=  digitalRead(ENTRANCE_COUNT);
+ display.showNumberDec(amount_of_people);
+}
+
+void buzzIfTempHum(){
   // buzz if the temperature is over 30
   // when hum and temp are too high buzz as well but make the functionality
    if(DHT.temperature > 30){
@@ -66,28 +64,29 @@ enter_counter();
     noTone(BUZZ);     // Stop sound...
     delay(1000);        // ...for 1sec
   }
+}
 
-
-//sabotage
-digital = digitalRead(SAB_SENSOR);
-Serial.println(digital); 
-if(digital == HIGH) {
+void sabotage(){
+  //sabotage
+  digital = digitalRead(SAB_SENSOR);
+  Serial.println(digital); 
+  if(digital == HIGH) {
     tone(BUZZ, 1000); // Send 1KHz sound signal...
-
- delay(1000);        // ...for 1 sec
+    delay(1000);        // ...for 1 sec
     noTone(BUZZ);     // Stop sound...
     delay(1000); 
+  };
+}
+void loop() {
+  // put your main code here, to run repeatedly:
 
-};
+enter_counter();
 
-
-
+  showTempHum();
+  buzzIfTempHum();
+  sabotage();
   // Count sensor for entering
-
   // DISPLAY sensor
  // display.showNumberDec(DHT.temperature);
-
-
-
   delay(1000);
 }
